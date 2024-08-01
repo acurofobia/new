@@ -1,0 +1,44 @@
+.result-page-wrapper {
+  width: clamp(15.625rem, 8.2237rem + 39.4737vw, 43.75rem);;
+}
+
+.result-page-header2 {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+
+.result-page-attension {
+  font-size: clamp(0.9375rem, 0.8553rem + 0.4386vw, 1.25rem);
+  font-weight: 500;
+  padding-bottom: 20px;
+}
+
+.result-page-wrapper-result {
+  padding: 20px 10px;
+  border-radius: 20px;
+  border: 2px solid black;
+  margin-bottom: 10px;
+}
+
+.result-page-header3 {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.result-page-result {
+  padding-bottom: 20px;
+  font-size: clamp(0.9375rem, 0.8553rem + 0.4386vw, 1.25rem);
+  font-weight: 500;
+}
+
+.result-page-result-header {
+  font-size: clamp(0.9375rem, 0.8553rem + 0.4386vw, 1.25rem);
+  font-weight: 700;
+  padding-bottom: 20px;
+}
+
+.result-page-result-wrapper {
+  display: grid;
+  gap: 10px;
+  font-size: clamp(0.9375rem, 0.8553rem + 0.4386vw, 1.25rem);
+}

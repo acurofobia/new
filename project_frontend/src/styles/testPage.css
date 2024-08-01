@@ -1,0 +1,24 @@
+.start-test-form {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+
+.test-page-button {
+  margin-top: 20px;
+}
+
+p.test-page-uins {
+  cursor: default;
+}
+
+.test-page-header2 {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.test-page-status {
+  font-size: clamp(0.9375rem, 0.8553rem + 0.4386vw, 1.25rem);
+  font-weight: 500;
+  padding-bottom: 20px;
+}

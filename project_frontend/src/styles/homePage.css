@@ -1,0 +1,11 @@
+.home-page-nav-list{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.button:hover {
+  background-color: #88BFFF;
+  transition: 0.3s;
+}
