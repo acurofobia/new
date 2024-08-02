@@ -1,4 +1,4 @@
-networks:
+tnetworks:
   dev:
 
 services:
@@ -17,12 +17,12 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: ./project_backend
     networks:
       - dev
 
   frontend:
     build:
-      context: ./frontend
+      context: ./project_frontend
     networks:
       - dev
