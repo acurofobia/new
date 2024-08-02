@@ -29,7 +29,7 @@ const StartTestForm = ({setResponseStatus}) => {
   }
 
   const onClick = () => {
-    fetch('http://localhost:5000/show')
+    fetch('api/show')
     .then((res) => {
       return res.json();
     })
