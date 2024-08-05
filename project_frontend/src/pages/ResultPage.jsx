@@ -6,20 +6,36 @@ import '../styles/resultPage.css';
 
 const ResultPage = () => {
   const location = useLocation();
+  const toSend = {};
   const data = location.state;
   const [rightAnswered, setRightAnswered] = useState(0);
   const selectedUin = parseInt(sessionStorage.getItem('selectedUin'));
   const questions = JSON.parse(sessionStorage.getItem('data'));
   const category = questions.category;
   delete questions.category;
-  const toSend = {}
-  toSend[selectedUin] = questions;
   const currentdate = new Date();
   toSend.timeEnd = currentdate.getHours() + ":"
                                     + currentdate.getMinutes() + ":"
                                     + currentdate.getSeconds();
   toSend.date = currentdate.getDate() + "." + (currentdate.getMonth()+1)  + "." + currentdate.getFullYear();
   sessionStorage.setItem('endTestTime', toSend.timeEnd);
+
+
+  toSend[parseInt(sessionStorage.getItem('selectedUin'))] = questions;
+  // toSend.praktCount = praktCount;
+  // toSend.temCount = temCount;
+  toSend.testTimeEnd = sessionStorage.getItem('endTestTime');
+  toSend.testTimeStart = sessionStorage.getItem('startTestTime');
+
+  fetch(`http://localhost:5000/end/${selectedUin}/${category}`, {
+    method: "PUT",
+    body: JSON.stringify({'test': JSON.stringify(toSend)}),
+    headers: {
+      'content-type': 'application/json'
+    }})
+
+
+
 
   return (
     <div className='result-page-wrapper'>

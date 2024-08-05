@@ -20,7 +20,7 @@ const AdminPage = () => {
   const onSubmit = (evt) => {
     evt.preventDefault();
 
-    fetch(`api/add/${org}/${uin}/${category}/${questions.current?.value}/${pQuestions}/${tQuestions}`, {
+    fetch(`http://localhost:5000/add/${org}/${uin}/${category}/${questions.current?.value}/${pQuestions}/${tQuestions}`, {
       method: 'PUT'
     })
     .then((res) => {
@@ -46,7 +46,7 @@ const AdminPage = () => {
   }
 
   const onClick = () => {
-    fetch('api/show')
+    fetch('http://localhost:5000/show')
     .then((res) => {
       return res.json();
     })

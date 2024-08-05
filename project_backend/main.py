@@ -99,8 +99,8 @@ class DeleteUin(Resource):
 def wordTemplate (uin, category, args):
   args = json.loads(args)
   questions = args[str(uin)]
-  countP = args['praktCount']
-  countT = args['temCount']
+  # countP = args['praktCount']
+  # countT = args['temCount']
   org = questions['org']
   if (org == 'fda'):
     doc = DocxTemplate("shablon_fda.docx")
@@ -108,7 +108,7 @@ def wordTemplate (uin, category, args):
   elif (org == 'favt_mos'):
     doc = DocxTemplate("shablon_favt_mos.docx")
     doc2 = DocxTemplate("shablon_favt_mos2.docx")
-  listOfNumbers = list(questions)[0:-3]
+  listOfNumbers = list(questions)[0:-2]
   print('------------------', listOfNumbers)
   context = {}
   context2 = {}
@@ -134,8 +134,8 @@ def wordTemplate (uin, category, args):
   context['uin'] = str(uin)
   context['category'] = str(category)
   context['result'] = str(count)
-  context['resultP'] = str(countP)
-  context['resultT'] = str(countT)
+  # context['resultP'] = str(countP)
+  # context['resultT'] = str(countT)
   context['timestart'] = args['testTimeStart']
   context['timeend'] = args['testTimeEnd']
   context['date'] = args['date']
