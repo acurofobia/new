@@ -25,7 +25,7 @@ const ResultPage = () => {
     <div className='result-page-wrapper'>
       <h2 className='result-page-header2 header2'>Ваш УИН: {selectedUin}</h2>
       <p className='result-page-attension'><strong>Внимание!</strong> Не нажимайте на кнопку ниже без указания руководителя проверки</p>
-      <Link className='button' to={'/prakt/1'}>Перейти к практическим вопросам</Link>
+      {/* <Link className='button' to={'/prakt/1'}>Перейти к практическим вопросам</Link> */}
       <h2 className='result-page-header3 header2'>Результаты прохождения тестовой части:</h2>
       <p className='result-page-result'>Правильно: {rightAnswered}</p>
       {data.map((element, id) => {
