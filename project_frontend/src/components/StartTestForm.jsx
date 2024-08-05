@@ -10,7 +10,7 @@ const StartTestForm = ({setResponseStatus}) => {
     evt.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:5000/api/${uin}`);
+      const res = await fetch(`/api/api/${uin}`);
       if (res.ok) {
         const data = await res.json();
         const dataUin = data.uin;
@@ -29,7 +29,7 @@ const StartTestForm = ({setResponseStatus}) => {
   }
 
   const onClick = () => {
-    fetch('http://localhost:5000/show')
+    fetch('/api/show')
     .then((res) => {
       return res.json();
     })

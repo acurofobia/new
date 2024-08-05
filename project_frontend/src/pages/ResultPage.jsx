@@ -27,7 +27,7 @@ const ResultPage = () => {
   toSend.testTimeEnd = sessionStorage.getItem('endTestTime');
   toSend.testTimeStart = sessionStorage.getItem('startTestTime');
 
-  fetch(`http://localhost:5000/end/${selectedUin}/${category}`, {
+  fetch(`/api/end/${selectedUin}/${category}`, {
     method: "PUT",
     body: JSON.stringify({'test': JSON.stringify(toSend)}),
     headers: {
