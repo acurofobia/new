@@ -36,7 +36,6 @@ const PraktPage = () => {
     }
     questions[number-1].options = answersArray;
     data['prakt'] = questions;
-    console.log(questions);
     sessionStorage.setItem('data', JSON.stringify(data));
     if (parseInt(number) == parseInt(questions.length)){
       setEnd('true');

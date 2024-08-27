@@ -15,7 +15,6 @@ const StartTestForm = ({setResponseStatus}) => {
         const data = await res.json();
         const dataUin = data.uin;
         setResponseStatus(`Уин найден, можете приступать к тесту`);
-        console.log(JSON.parse(data.questions));
         sessionStorage.setItem('data', (data.questions));
         sessionStorage.setItem('selectedUin', dataUin);
       } else {
