@@ -8,6 +8,7 @@ import QuestionPage from './pages/QuestionPage';
 import ResultPage from './pages/ResultPage';
 import PraktPage from './pages/PraktPage';
 import PraktResultPage from './pages/PraktResultPage';
+import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 import './styles/main.css'
 

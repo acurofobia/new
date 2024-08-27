@@ -18,7 +18,7 @@ const ResultPage = () => {
   toSend.timeEnd = currentdate.getHours() + ":"
                                     + currentdate.getMinutes() + ":"
                                     + currentdate.getSeconds();
-  toSend.date = currentdate.getDate() + "." + (currentdate.getMonth()+1)  + "." + currentdate.getFullYear();
+  toSend.date = ("0" + currentdate.getDate()).slice(-2) + "." + ("0" + (currentdate.getMonth()+1)).slice(-2)  + "." + currentdate.getFullYear();
   sessionStorage.setItem('endTestTime', toSend.timeEnd);
 
   return (

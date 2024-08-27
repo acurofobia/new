@@ -17,10 +17,6 @@ app.app_context().push()
 video_put_args = reqparse.RequestParser()
 video_put_args.add_argument("test", type=str)
 
-# with open(f'1prakt.json') as json_file:
-#   data = json.load(json_file)
-# print(data['questions'][1])
-
 class User(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   uin = db.Column(db.Integer)
@@ -42,18 +38,20 @@ class Add(Resource):
     result = User.query.filter_by(uin=uin).first()
     if result:
       abort(409, message="UIN already exists")
+
     if (org == 'fda'):
       with open(f'{category}k.json') as json_file:
         data = json.load(json_file)
+      with open(f'FDA_prakt_{category}k.json') as json_file:
+        dataPrakt = json.load(json_file)
+        dataPrakt = dataPrakt['questions']
+      with open(f'FDA_tem_{category}k.json') as json_file:
+        dataTem = json.load(json_file)
+        dataTem = dataTem['questions']
+
     elif (org == 'favt_mos'):
       with open(f'{category}mosk.json') as json_file:
         data = json.load(json_file)
-    with open('1prakt.json') as json_file:
-      dataPrakt = json.load(json_file)
-      dataPrakt = dataPrakt['questions']
-    with open('1tem.json') as json_file:
-      dataTem = json.load(json_file)
-      dataTem = dataTem['questions']
     edited = {}
     editedP = []
     numbers = numbers.split(', ')
@@ -109,7 +107,6 @@ def wordTemplate (uin, category, args):
     doc = DocxTemplate("shablon_favt_mos.docx")
     doc2 = DocxTemplate("shablon_favt_mos2.docx")
   listOfNumbers = list(questions)[0:-3]
-  print('------------------', listOfNumbers)
   context = {}
   context2 = {}
   i = 1
@@ -131,6 +128,7 @@ def wordTemplate (uin, category, args):
         count += 1
         break
     i += 1
+
   context['uin'] = str(uin)
   context['category'] = str(category)
   context['result'] = str(count)
@@ -145,6 +143,24 @@ def wordTemplate (uin, category, args):
   context2['timestart'] = args['testTimeStart']
   context2['timeend'] = args['testTimeEnd']
   context2['date'] = args['date']
+  context2['prresult'] = str(countP + countT)
+
+  temCounter = 1
+  prCounter = 1
+  for question in questions['prakt']:
+    if(question['type'] == 'tem'):
+      context2['qtem' + str(temCounter)] = question['question']
+      for answer in question['options']:
+        if(answer.get('answered')):
+          context2['atem' + str(temCounter)] = answer['answer']
+      temCounter += 1
+    if(question['type'] == 'prakt'):
+      context2['qpr' + str(prCounter)] = question['question']
+      for answer in question['options']:
+        if(answer.get('answered')):
+          context2['apr' + str(prCounter)] = answer['answer']
+      prCounter += 1
+
   doc.render(context)
   doc.save(f"./passed/{org}{uin}.docx")
   doc2.render(context2)
@@ -152,11 +168,11 @@ def wordTemplate (uin, category, args):
 
 
 
-api.add_resource(Api, "/api/<int:uin>")
-api.add_resource(Add, "/add/<string:org>/<int:uin>/<string:category>/<string:numbers>/<string:prakt>/<string:tem>")
-api.add_resource(EndOfTest, "/end/<int:uin>/<string:category>")
-api.add_resource(ShowAll, "/show")
-api.add_resource(DeleteUin, "/del/<int:uin>")
+api.add_resource(Api, "/api/api/<int:uin>")
+api.add_resource(Add, "/api/add/<string:org>/<int:uin>/<string:category>/<string:numbers>/<string:prakt>/<string:tem>")
+api.add_resource(EndOfTest, "/api/end/<int:uin>/<string:category>")
+api.add_resource(ShowAll, "/api/show")
+api.add_resource(DeleteUin, "/api/del/<int:uin>")
 
 if __name__ == "__main__":
   app.run(debug=True, host="0.0.0.0")

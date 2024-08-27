@@ -9,7 +9,7 @@ const PraktResultPage = () => {
   const praktCount = counts[0];
   const temCount = counts[1];
   const currentdate = new Date();
-  sessionStorage.setItem('date', currentdate.getDate() + "." + (currentdate.getMonth()+1)  + "." + currentdate.getFullYear());
+  sessionStorage.setItem('date', ("0" + currentdate.getDate()).slice(-2) + "." + ("0" + (currentdate.getMonth()+1)).slice(-2) + "." + currentdate.getFullYear());
 
   const toSend = {};
   const questions = JSON.parse(sessionStorage.getItem('data'));

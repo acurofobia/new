@@ -7,7 +7,7 @@
   margin-bottom: 40px;
 }
 
-.prakt-page-input[type='checkbox'] {
+.prakt-page-input[type='radio'] {
   display: none;
 }
 
@@ -20,6 +20,7 @@
   padding: 20px 40px;
   font-weight: 500;
   cursor: pointer;
+  white-space: pre-line;
 }
 
 .prakt-page-input:checked + .prakt-page-answer {

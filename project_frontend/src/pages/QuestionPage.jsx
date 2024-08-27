@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Question from '../components/Question';
+import ScrollToTop from '../components/ScrollToTop';
 import '../styles/questionPage.css'
 
 const QuestionPage = () => {
@@ -17,6 +18,7 @@ const QuestionPage = () => {
   
   return (
     <>
+      <ScrollToTop></ScrollToTop>
       <div className='question-page-wrapper'>
         <Question key={number} number={number} setEnd={setEnd} arrayOfCheckedAnswers={arrayOfCheckedAnswers} setArrayOfCheckedAnswers={setArrayOfCheckedAnswers}></Question>
       </div>
