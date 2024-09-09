@@ -19,7 +19,8 @@ const AdminPage = () => {
 
   const onSubmit = (evt) => {
     evt.preventDefault();
-
+    sessionStorage.setItem('praktTicket', pQuestions);
+    sessionStorage.setItem('temTicket', tQuestions);
     fetch(`api/add/${org}/${uin}/${category}/${questions.current?.value}/${pQuestions}/${tQuestions}`, {
       method: 'PUT'
     })
@@ -93,11 +94,11 @@ const AdminPage = () => {
         <svg viewBox="0 0 382 17" className='svg'>
           <use href={svg2} /> 
         </svg>
-        <input className='page-form-item' type="text" placeholder='Вопросы практика' onChange={(evt) => {setPQuestions(evt.target.value)}} />
+        <input className='page-form-item' type="text" placeholder={(org == 'favt_mos') ? 'Номер билета практика' : 'Вопросы практика'} onChange={(evt) => {setPQuestions(evt.target.value)}} />
         <svg viewBox="0 0 382 17" className='svg'>
           <use href={svg2} /> 
         </svg> 
-        <input className='page-form-item' type="text" placeholder='Вопросы тематика' onChange={(evt) => {setTQuestions(evt.target.value)}} />
+        <input className='page-form-item' type="text" placeholder={(org == 'favt_mos') ? 'Номер билета тематика' : 'Вопросы тематика'} onChange={(evt) => {setTQuestions(evt.target.value)}} />
         <svg viewBox="0 0 382 17" className='svg'>
           <use href={svg2} /> 
         </svg> 

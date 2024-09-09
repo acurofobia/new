@@ -18,6 +18,8 @@ const PraktResultPage = () => {
   const category = questions.category;
   toSend.praktCount = praktCount;
   toSend.temCount = temCount;
+  toSend.praktTicket = parseInt(sessionStorage.getItem('praktTicket'));
+  toSend.temTicket = parseInt(sessionStorage.getItem('temTicket'));
   toSend.testTimeEnd = sessionStorage.getItem('endTestTime');
   toSend.testTimeStart = sessionStorage.getItem('startTestTime');
   toSend.date = sessionStorage.getItem('date');

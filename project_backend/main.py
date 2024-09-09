@@ -52,6 +52,12 @@ class Add(Resource):
     elif (org == 'favt_mos'):
       with open(f'{category}mosk.json') as json_file:
         data = json.load(json_file)
+      with open(f'FAVT_prakt_{category}k.json') as json_file:
+        dataPrakt = json.load(json_file)
+        dataPrakt = dataPrakt['tickets']
+      with open(f'FAVT_tem_{category}k.json') as json_file:
+        dataTem = json.load(json_file)
+        dataTem = dataTem['tickets']
     edited = {}
     editedP = []
     numbers = numbers.split(', ')
@@ -59,10 +65,18 @@ class Add(Resource):
     tNumbers = tem.split(', ')
     for i in dataPrakt:
       if (str(i['number']) in pNumbers):
-        editedP.append(i)
+        if (org == 'favt_mos'):
+          for question in i['questions']:
+            editedP.append(question)
+        if (org == 'fda'):
+          editedP.append(i)
     for i in dataTem:
       if (str(i['number']) in tNumbers):
-        editedP.append(i)
+        if (org == 'favt_mos'):
+          for question in i['questions']:
+            editedP.append(question)
+        if (org == 'fda'):
+          editedP.append(i)
     for i in data:
       if i in numbers:
         edited[i] = data[i]
@@ -137,6 +151,8 @@ def wordTemplate (uin, category, args):
   context['timestart'] = args['testTimeStart']
   context['timeend'] = args['testTimeEnd']
   context['date'] = args['date']
+  context['praktTicket'] = args['praktTicket']
+  context['temTicket'] = args['temTicket']
   context2['uin'] = str(uin)
   context2['category'] = str(category)
   context2['result'] = str(count)
@@ -144,6 +160,8 @@ def wordTemplate (uin, category, args):
   context2['timeend'] = args['testTimeEnd']
   context2['date'] = args['date']
   context2['prresult'] = str(countP + countT)
+  context2['praktTicket'] = args['praktTicket']
+  context2['temTicket'] = args['temTicket']
 
   temCounter = 1
   prCounter = 1
