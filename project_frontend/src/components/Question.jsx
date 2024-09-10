@@ -40,7 +40,7 @@ const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
       { answersArray.map((answer, id) => {
         return <Answer setCheckedAnswer={setCheckedAnswer} answer={answer} id={id+1} key={id}></Answer>
       }) }
-      <button className='button' disabled={buttonDisabled} type='submit'>Слудующий вопрос</button>
+      <button className='button' disabled={buttonDisabled} type='submit'>Следующий вопрос</button>
     </form>
   )
 }
