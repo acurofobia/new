@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 from flask_cors import CORS
 from docxtpl import DocxTemplate
+import pathlib
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
@@ -138,7 +139,7 @@ def wordTemplate (uin, category, args):
       if (answers[item]['right'] == True and 
           answers[item].get('selected')):
         context['a' + str(i)] = '+'
-        context2['af' + str(i)] = 'Правильно ' + answers[item]['answer']
+        context2['af' + str(i)] = 'Правильно ' + str(answers[item]['answer'])
         count += 1
         break
     i += 1
@@ -193,5 +194,9 @@ api.add_resource(ShowAll, "/api/show")
 api.add_resource(DeleteUin, "/api/del/<int:uin>")
 
 if __name__ == "__main__":
-  app.run(debug=True, host="0.0.0.0")
+  currentDirectory = pathlib.Path('passed/')
+  for currentFile in currentDirectory.iterdir():
+      print(currentFile)
   db.create_all()
+  app.run(debug=True, host="0.0.0.0")
+  

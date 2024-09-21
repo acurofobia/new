@@ -15,9 +15,9 @@ const ResultPage = () => {
   const toSend = {}
   toSend[selectedUin] = questions;
   const currentdate = new Date();
-  toSend.timeEnd = currentdate.getHours() + ":"
-                                    + currentdate.getMinutes() + ":"
-                                    + currentdate.getSeconds();
+  toSend.timeEnd = ("0" + currentdate.getHours()).slice(-2) + ":"
+                                    + ("0" + currentdate.getMinutes()).slice(-2) + ":"
+                                    + ("0" + currentdate.getSeconds()).slice(-2);
   toSend.date = ("0" + currentdate.getDate()).slice(-2) + "." + ("0" + (currentdate.getMonth()+1)).slice(-2)  + "." + currentdate.getFullYear();
   sessionStorage.setItem('endTestTime', toSend.timeEnd);
 

@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 const ResponseStatus = ({responseStatus}) => {
   const setCurrentTime = () => {
     const currentdate = new Date();
-    const currentTime = currentdate.getHours() + ":"  
-                                    + currentdate.getMinutes() + ":" 
-                                    + currentdate.getSeconds();
+    const currentTime = ("0" + currentdate.getHours()).slice(-2) + ":"
+                      + ("0" + currentdate.getMinutes()).slice(-2) + ":"
+                      + ("0" + currentdate.getSeconds()).slice(-2);
     sessionStorage.setItem('startTestTime', currentTime);
   }
 

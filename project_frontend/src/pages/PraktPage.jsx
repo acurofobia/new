@@ -58,7 +58,7 @@ const PraktPage = () => {
             <label htmlFor={answer.option} className="prakt-page-answer">{answer.answer}</label>
           </div>
         }) }
-        <button className='button' disabled={buttonDisabled} type='submit'>Слудующий вопрос</button>
+        <button className='button' disabled={buttonDisabled} type='submit'>Следующий вопрос</button>
       </form>
     </>
   )
