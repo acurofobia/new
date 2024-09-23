@@ -23,6 +23,7 @@ class User(db.Model):
   uin = db.Column(db.Integer)
   questions = db.Column(db.Text)
   passed = db.Column(db.Integer)
+  ticket = db.Column(db.Integer)
 
   def __repr__(self):
     return f'id:{self.id}, uin:{self.uin}, questions:{self.questions}'
@@ -59,6 +60,16 @@ class Add(Resource):
       with open(f'FAVT_tem_{category}k.json') as json_file:
         dataTem = json.load(json_file)
         dataTem = dataTem['tickets']
+
+    elif (org == 'favt_ul'):
+      with open(f'{category}ul.json') as json_file:
+        data = json.load(json_file)
+      with open(f'FAVT_UL_prakt_{category}k.json') as json_file:
+        dataPrakt = json.load(json_file)
+        dataPrakt = dataPrakt['tickets']
+      with open(f'FAVT_UL_tem_{category}k.json') as json_file:
+        dataTem = json.load(json_file)
+        dataTem = dataTem['tickets']
     edited = {}
     editedP = []
     numbers = numbers.split(', ')
@@ -66,14 +77,14 @@ class Add(Resource):
     tNumbers = tem.split(', ')
     for i in dataPrakt:
       if (str(i['number']) in pNumbers):
-        if (org == 'favt_mos'):
+        if (org == 'favt_mos' or org == 'favt_ul'):
           for question in i['questions']:
             editedP.append(question)
         if (org == 'fda'):
           editedP.append(i)
     for i in dataTem:
       if (str(i['number']) in tNumbers):
-        if (org == 'favt_mos'):
+        if (org == 'favt_mos' or org == 'favt_ul'):
           for question in i['questions']:
             editedP.append(question)
         if (org == 'fda'):
@@ -84,7 +95,10 @@ class Add(Resource):
     edited['category'] = category
     edited['org'] = org
     edited['prakt'] = editedP
-    user = User(uin=uin, questions=json.dumps(edited))
+    if(org == 'favt_mos' or org == 'favt_ul'):
+      user = User(uin=uin, questions=json.dumps(edited), ticket=int(prakt))
+    else:
+      user = User(uin=uin, questions=json.dumps(edited))
     db.session.add(user)
     db.session.commit()
     return 201
@@ -118,9 +132,10 @@ def wordTemplate (uin, category, args):
   if (org == 'fda'):
     doc = DocxTemplate("shablon_fda.docx")
     doc2 = DocxTemplate("shablon_fda2.docx")
-  elif (org == 'favt_mos'):
+  elif (org == 'favt_mos' or org == 'favt_ul'):
     doc = DocxTemplate("shablon_favt_mos.docx")
     doc2 = DocxTemplate("shablon_favt_mos2.docx")
+
   listOfNumbers = list(questions)[0:-3]
   context = {}
   context2 = {}
@@ -161,8 +176,10 @@ def wordTemplate (uin, category, args):
   context2['timeend'] = args['testTimeEnd']
   context2['date'] = args['date']
   context2['prresult'] = str(countP + countT)
-  context2['praktTicket'] = args['praktTicket']
-  context2['temTicket'] = args['temTicket']
+  if (org == 'favt_mos' or org == 'favt_ul'):
+    ticket = User.query.filter_by(uin=uin).first().ticket
+    context2['praktTicket'] = ticket
+    context2['temTicket'] = ticket
 
   temCounter = 1
   prCounter = 1

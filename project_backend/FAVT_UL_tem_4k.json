@@ -1,0 +1,80 @@
+{
+    "tickets": 
+    [
+        {
+            "number": 1,
+            "questions": 
+            [
+                {
+                    "number": 1,
+                    "type": "tem",
+                    "question": "",
+                    "options": 
+                    [
+                        {
+                            "option": "1",
+                            "answer": "",
+                            "points": 10
+                          },
+                          {
+                            "option": "2",
+                            "answer": "",
+                            "points": 5
+                          },
+                          {
+                            "option": "3",
+                            "answer": "",
+                            "points": 0
+                          }
+                    ]
+                },
+                {
+                    "number": 2,
+                    "type": "tem",
+                    "question": "",
+                    "options": 
+                    [
+                        {
+                            "option": "1",
+                            "answer": "",
+                            "points": 10
+                          },
+                          {
+                            "option": "2",
+                            "answer": "",
+                            "points": 5
+                          },
+                          {
+                            "option": "3",
+                            "answer": "",
+                            "points": 0
+                          }
+                    ]
+                },
+                {
+                    "number": 3,
+                    "type": "tem",
+                    "question": "",
+                    "options": 
+                    [
+                        {
+                            "option": "1",
+                            "answer": "",
+                            "points": 10
+                          },
+                          {
+                            "option": "2",
+                            "answer": "",
+                            "points": 5
+                          },
+                          {
+                            "option": "3",
+                            "answer": "",
+                            "points": 0
+                          }
+                    ]
+                }
+            ]
+        }
+    ]
+}

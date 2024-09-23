@@ -5,6 +5,7 @@ import Answer from './Answer';
 
 const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
   const questions = JSON.parse(sessionStorage.getItem('data'));
+  console.log(JSON.parse(sessionStorage.getItem('data')));
   const arrayOfQuestionsKeys = Object.keys(questions).slice(0, -3);
   const answers = questions[arrayOfQuestionsKeys[number-1]].answers;
   const navigate = useNavigate();
