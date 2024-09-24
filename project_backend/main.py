@@ -180,6 +180,9 @@ def wordTemplate (uin, category, args):
     ticket = User.query.filter_by(uin=uin).first().ticket
     context2['praktTicket'] = ticket
     context2['temTicket'] = ticket
+    context['praktTicket'] = ticket
+    context['temTicket'] = ticket
+    
 
   temCounter = 1
   prCounter = 1
