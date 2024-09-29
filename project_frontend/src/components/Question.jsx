@@ -17,17 +17,18 @@ const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
     evt.preventDefault();
     const currentQuestionNumber = arrayOfQuestionsKeys[number-1];
     const a = {};
-    a[currentQuestionNumber] = checkedAnswer
+    a[currentQuestionNumber] = checkedAnswer;
     setArrayOfCheckedAnswers(old => [...old, a]);
 
     questions[currentQuestionNumber].answers[checkedAnswer].selected = true;
     sessionStorage.setItem('data', JSON.stringify(questions));
     
     if (!questions[arrayOfQuestionsKeys[number]]) {
+      console.log('HERE!!!')
       setEnd(true);
     } else {
       setEnd(false);
-      navigate(`/question/${parseInt(number) + 1}`)
+      navigate(`/question/${parseInt(number) + 1}`);
     }
   }
 

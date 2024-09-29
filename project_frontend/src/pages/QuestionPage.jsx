@@ -22,6 +22,7 @@ const QuestionPage = () => {
       <div className='question-page-wrapper'>
         <Question key={number} number={number} setEnd={setEnd} arrayOfCheckedAnswers={arrayOfCheckedAnswers} setArrayOfCheckedAnswers={setArrayOfCheckedAnswers}></Question>
       </div>
+      {/* <button onClick={() => setEnd(true)}>123</button> */}
     </>
   )
 }
