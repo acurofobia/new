@@ -31,6 +31,12 @@
   cursor: pointer;
 }
 
+.question-page-timer {
+  display: grid;
+  text-align: center;
+  font-weight: 500;
+}
+
 .question-page-input:checked + .answer {
   transition: 0.3s;
   background-color: #cce1f9;
