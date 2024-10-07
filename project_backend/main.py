@@ -132,9 +132,12 @@ def wordTemplate (uin, category, args):
   if (org == 'fda'):
     doc = DocxTemplate("shablon_fda.docx")
     doc2 = DocxTemplate("shablon_fda2.docx")
-  elif (org == 'favt_mos' or org == 'favt_ul'):
+  elif (org == 'favt_mos'):
     doc = DocxTemplate("shablon_favt_mos.docx")
     doc2 = DocxTemplate("shablon_favt_mos2.docx")
+  elif (org == 'favt_ul'):
+    doc = DocxTemplate("shablon_favt_ul.docx")
+    doc2 = DocxTemplate("shablon_favt_ul2.docx")
 
   listOfNumbers = list(questions)[0:-3]
   context = {}
