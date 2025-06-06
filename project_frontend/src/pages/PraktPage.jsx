@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import _ from 'lodash';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import ScrollToTop from '../components/ScrollToTop';
@@ -15,11 +16,21 @@ const PraktPage = () => {
   const questions = data['prakt'];
   const {number} = useParams();
 
+  function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]]; // swap
+  }
+  return array;
+}
+
   useEffect(() => {
     if (end == 'true'){
       navigate('/praktresult', {state: [countP, countT]});
     }}, [end]);
   const answersArray = questions[number-1].options;
+  const shuffledAnswersArray = shuffleArray(answersArray);
+
   const array = [0, 1, 2];
 
   const onSubmit = (evt) => {
@@ -52,7 +63,7 @@ const PraktPage = () => {
         <h3 className='prakt-page-question'>{(questions[number-1].type == 'prakt') ? 'Практическая': 'Тематическая'} задача: {questions[number-1].question}</h3>
         <img src={questions[number-1].image} alt="" />
         <p className='prakt-page-question-help'>Выберите 1 правильный ответ</p>
-        { answersArray.map((answer) => {
+        { shuffledAnswersArray.map((answer) => {
           return <div key={number + answer.option}>
             <input className='prakt-page-input' type='radio' defaultChecked={false} id={answer.option} name="answer" />
             <label htmlFor={answer.option} className="prakt-page-answer">{answer.answer}</label>
