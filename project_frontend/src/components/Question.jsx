@@ -11,7 +11,17 @@ const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
   const navigate = useNavigate();
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [checkedAnswer, setCheckedAnswer] = useState('');
-  const answersArray = [];
+  const [shuffledAnswers] = useState(() => {
+    const arr = [];
+    for (const key in answers) {
+      arr.push({ key, ...answers[key] });
+    }
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  });
 
   const onSubmit = (evt) => {
     evt.preventDefault();
@@ -32,15 +42,11 @@ const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
     }
   }
 
-  for (const key in answers) {
-    answersArray.push(answers[key])
-  }
-
   return (
     <form className='question-page-form' onChange={() => setButtonDisabled(false)} onSubmit={onSubmit}>
       <h3 className='question-page-question'>{questions[arrayOfQuestionsKeys[number-1]].question}</h3>
-      { answersArray.map((answer, id) => {
-        return <Answer setCheckedAnswer={setCheckedAnswer} answer={answer} id={id+1} key={id}></Answer>
+      { shuffledAnswers.map((answer, id) => {
+        return <Answer setCheckedAnswer={setCheckedAnswer} answer={answer} id={answer.key} key={id}></Answer>
       }) }
       <button className='button' disabled={buttonDisabled} type='submit'>Следующий вопрос</button>
     </form>

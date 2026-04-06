@@ -16,20 +16,19 @@ const PraktPage = () => {
   const questions = data['prakt'];
   const {number} = useParams();
 
-  function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]]; // swap
-  }
-  return array;
-}
+  const [shuffledAnswersArray] = useState(() => {
+    const arr = [...questions[number-1].options];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  });
 
   useEffect(() => {
     if (end == 'true'){
       navigate('/praktresult', {state: [countP, countT]});
     }}, [end]);
-  const answersArray = questions[number-1].options;
-  const shuffledAnswersArray = shuffleArray(answersArray);
 
   const array = [0, 1, 2];
 
@@ -38,14 +37,14 @@ const PraktPage = () => {
     for (const answer in array) {
       if (evt.target[answer].checked) {
         if (questions[number-1].type == 'prakt') {
-          setCountP((prev) => prev + answersArray[answer].points);
+          setCountP((prev) => prev + shuffledAnswersArray[answer].points);
         } else {
-          setCountT((prev) => prev + answersArray[answer].points);
+          setCountT((prev) => prev + shuffledAnswersArray[answer].points);
         }
-        answersArray[answer].answered = true;
+        shuffledAnswersArray[answer].answered = true;
       }
     }
-    questions[number-1].options = answersArray;
+    questions[number-1].options = shuffledAnswersArray;
     data['prakt'] = questions;
     sessionStorage.setItem('data', JSON.stringify(data));
     if (parseInt(number) == parseInt(questions.length)){
