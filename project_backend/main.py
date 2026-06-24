@@ -1,10 +1,11 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api, Resource, abort, reqparse
 from flask_sqlalchemy import SQLAlchemy
 import json
 from flask_cors import CORS
 from docxtpl import DocxTemplate
 import pathlib
+from sqlalchemy import text
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
@@ -24,6 +25,7 @@ class User(db.Model):
   questions = db.Column(db.Text)
   passed = db.Column(db.Integer)
   ticket = db.Column(db.Integer)
+  answer_order = db.Column(db.String(20), nullable=False, default='random')
 
   def __repr__(self):
     return f'id:{self.id}, uin:{self.uin}, questions:{self.questions}'
@@ -33,13 +35,16 @@ class Api(Resource):
     result = User.query.filter_by(uin=uin).first()
     if not result:
       abort(404, message="Could not find this UIN")
-    return {"questions": result.questions, "uin": result.uin}
+    return {"questions": result.questions, "uin": result.uin, "answerOrder": result.answer_order or 'random'}
   
 class Add(Resource):
   def put(self, org, uin, category, numbers, prakt, tem):
     result = User.query.filter_by(uin=uin).first()
     if result:
       abort(409, message="UIN already exists")
+    answer_order = request.args.get('answerOrder', 'random')
+    if answer_order not in ['random', 'points_desc']:
+      abort(400, message="Invalid answer order")
 
     if (org == 'fda'):
       with open(f'{category}k.json') as json_file:
@@ -96,12 +101,19 @@ class Add(Resource):
     edited['org'] = org
     edited['prakt'] = editedP
     if(org == 'favt_mos' or org == 'favt_ul'):
-      user = User(uin=uin, questions=json.dumps(edited), ticket=int(prakt))
+      user = User(uin=uin, questions=json.dumps(edited), ticket=int(prakt), answer_order=answer_order)
     else:
-      user = User(uin=uin, questions=json.dumps(edited))
+      user = User(uin=uin, questions=json.dumps(edited), answer_order=answer_order)
     db.session.add(user)
     db.session.commit()
     return 201
+
+def init_database():
+  db.create_all()
+  columns = db.session.execute(text('PRAGMA table_info("user")')).fetchall()
+  if 'answer_order' not in [column[1] for column in columns]:
+    db.session.execute(text('ALTER TABLE "user" ADD COLUMN answer_order VARCHAR(20) NOT NULL DEFAULT \'random\''))
+    db.session.commit()
   
 class EndOfTest(Resource):
   def put(self, uin, category):
@@ -220,6 +232,6 @@ if __name__ == "__main__":
   currentDirectory = pathlib.Path('passed/')
   for currentFile in currentDirectory.iterdir():
       print(currentFile)
-  db.create_all()
+  init_database()
   app.run(debug=True, host="0.0.0.0")
   

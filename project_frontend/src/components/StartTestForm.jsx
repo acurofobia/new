@@ -17,6 +17,7 @@ const StartTestForm = ({setResponseStatus}) => {
         setResponseStatus(`Уин найден, можете приступать к тесту`);
         sessionStorage.setItem('data', (data.questions));
         sessionStorage.setItem('selectedUin', dataUin);
+        sessionStorage.setItem('answerOrder', data.answerOrder || 'random');
       } else {
         setResponseStatus(res.status);
         return;

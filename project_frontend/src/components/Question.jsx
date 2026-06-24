@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Answer from './Answer';
 
 const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
   const questions = JSON.parse(sessionStorage.getItem('data'));
-  console.log(JSON.parse(sessionStorage.getItem('data')));
   const arrayOfQuestionsKeys = Object.keys(questions).slice(0, -3);
   const answers = questions[arrayOfQuestionsKeys[number-1]].answers;
   const navigate = useNavigate();
@@ -25,6 +24,9 @@ const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
 
   const onSubmit = (evt) => {
     evt.preventDefault();
+    if (!checkedAnswer) {
+      return;
+    }
     const currentQuestionNumber = arrayOfQuestionsKeys[number-1];
     const a = {};
     a[currentQuestionNumber] = checkedAnswer;
@@ -34,7 +36,6 @@ const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
     sessionStorage.setItem('data', JSON.stringify(questions));
     
     if (!questions[arrayOfQuestionsKeys[number]]) {
-      console.log('HERE!!!')
       setEnd(true);
     } else {
       setEnd(false);
@@ -45,8 +46,16 @@ const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
   return (
     <form className='question-page-form' onChange={() => setButtonDisabled(false)} onSubmit={onSubmit}>
       <h3 className='question-page-question'>{questions[arrayOfQuestionsKeys[number-1]].question}</h3>
-      { shuffledAnswers.map((answer, id) => {
-        return <Answer setCheckedAnswer={setCheckedAnswer} answer={answer} id={answer.key} key={id}></Answer>
+      { shuffledAnswers.map((answer) => {
+        const inputId = `question-${number}-answer-${answer.key}`;
+        return <Answer
+          setCheckedAnswer={setCheckedAnswer}
+          answer={answer}
+          id={answer.key}
+          name={inputId}
+          checked={checkedAnswer === answer.key}
+          key={answer.key}
+        />
       }) }
       <button className='button' disabled={buttonDisabled} type='submit'>Следующий вопрос</button>
     </form>

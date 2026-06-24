@@ -13,6 +13,7 @@ const AdminPage = () => {
   const questions = useRef('');
   const [pQuestions, setPQuestions] = useState('');
   const [tQuestions, setTQuestions] = useState('');
+  const [answerOrder, setAnswerOrder] = useState('random');
   const [responseStatus, setResponseStatus] = useState('Ответа нет');
   const [allUins, setAllUins] = useState([]);
   const svg2 = svg + '#curve';
@@ -21,7 +22,7 @@ const AdminPage = () => {
     evt.preventDefault();
     sessionStorage.setItem('praktTicket', pQuestions);
     sessionStorage.setItem('temTicket', tQuestions);
-    fetch(`api/add/${org}/${uin}/${category}/${questions.current?.value}/${pQuestions}/${tQuestions}`, {
+    fetch(`api/add/${org}/${uin}/${category}/${questions.current?.value}/${pQuestions}/${tQuestions}?answerOrder=${answerOrder}`, {
       method: 'PUT'
     })
     .then((res) => {
@@ -100,6 +101,13 @@ const AdminPage = () => {
           <use href={svg2} /> 
         </svg> 
         <input className='page-form-item' type="text" placeholder={(org == 'favt_mos') ? 'Номер билета тематика' : 'Вопросы тематика'} onChange={(evt) => {setTQuestions(evt.target.value)}} />
+        <svg viewBox="0 0 382 17" className='svg'>
+          <use href={svg2} /> 
+        </svg> 
+        <select className='page-form-item' value={answerOrder} onChange={(evt) => {setAnswerOrder(evt.target.value)}}>
+          <option value="random">Перемешивать варианты ответов</option>
+          <option value="points_desc">Сначала вариант с максимальным числом баллов</option>
+        </select>
         <svg viewBox="0 0 382 17" className='svg'>
           <use href={svg2} /> 
         </svg> 

@@ -1,11 +1,19 @@
 import React from 'react'
 
-const Answer = ({answer, id, setCheckedAnswer}) => {
+const Answer = ({answer, id, name, checked, setCheckedAnswer}) => {
 
   return (
     <>
-      <input className='question-page-input' onChange={() => setCheckedAnswer(id)} type="radio" id={id} name="answer" />
-      <label htmlFor={id} className="question-page-answer answer">{answer.answer}</label>
+      <input
+        className='question-page-input'
+        checked={checked}
+        onChange={() => setCheckedAnswer(id)}
+        type="radio"
+        id={name}
+        name="answer"
+        value={id}
+      />
+      <label htmlFor={name} className="question-page-answer answer">{answer.answer}</label>
     </>
   )
 }

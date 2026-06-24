@@ -12,17 +12,14 @@ const Result = ({element, setRightAnswered}) => {
     questionNumber = key;
   }
   const questions = JSON.parse(sessionStorage.getItem('data'));
-  const answersForQuestion = [];
-
-  for (const key in questions[questionNumber].answers) {
-    answersForQuestion.push(questions[questionNumber].answers[key])
-  }
+  const answersForQuestion = Object.entries(questions[questionNumber].answers);
+  const selectedAnswerKey = String(element[questionNumber]);
 
   let ignore = false;
   useEffect(() => {
     if (!ignore) {
-      answersForQuestion.forEach((answer, id) => {
-        if((answer.right == true) && (id+1 == element[questionNumber])) {
+      answersForQuestion.forEach(([key, answer]) => {
+        if((answer.right == true) && (key === selectedAnswerKey)) {
           setRightAnswered(old => old + 1);
         }
       })
@@ -30,11 +27,11 @@ const Result = ({element, setRightAnswered}) => {
     return () => { ignore = true }
   }, [])
 
-  const selectColor = (id, answer) => {
+  const selectColor = (key, answer) => {
     if (answer.right) {
       return lime;
     }
-    if (id+1 == element[questionNumber]) {
+    if (key === selectedAnswerKey) {
       return red;
     }
     return;
@@ -44,8 +41,8 @@ const Result = ({element, setRightAnswered}) => {
     <div className='result-page-wrapper-result'>
       <h3 className='result-page-result-header'>{questions[questionNumber].question}</h3>
       <div className='result-page-result-wrapper'>
-        {answersForQuestion.map((answer, id) => {
-          return <p key={id} style={selectColor(id, answer)}>{answer.answer}</p>
+        {answersForQuestion.map(([key, answer]) => {
+          return <p key={key} style={selectColor(key, answer)}>{answer.answer}</p>
         })}
       </div>
     </div>
