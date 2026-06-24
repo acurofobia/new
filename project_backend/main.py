@@ -26,6 +26,9 @@ class User(db.Model):
   passed = db.Column(db.Integer)
   ticket = db.Column(db.Integer)
   answer_order = db.Column(db.String(20), nullable=False, default='random')
+  test_answer_order = db.Column(db.String(20), nullable=False, default='random')
+  prakt_answer_order = db.Column(db.String(20), nullable=False, default='random')
+  tem_answer_order = db.Column(db.String(20), nullable=False, default='random')
 
   def __repr__(self):
     return f'id:{self.id}, uin:{self.uin}, questions:{self.questions}'
@@ -35,15 +38,26 @@ class Api(Resource):
     result = User.query.filter_by(uin=uin).first()
     if not result:
       abort(404, message="Could not find this UIN")
-    return {"questions": result.questions, "uin": result.uin, "answerOrder": result.answer_order or 'random'}
+    return {
+      "questions": result.questions,
+      "uin": result.uin,
+      "answerOrder": result.answer_order or 'random',
+      "testAnswerOrder": result.test_answer_order or result.answer_order or 'random',
+      "praktAnswerOrder": result.prakt_answer_order or result.answer_order or 'random',
+      "temAnswerOrder": result.tem_answer_order or result.answer_order or 'random'
+    }
   
 class Add(Resource):
   def put(self, org, uin, category, numbers, prakt, tem):
     result = User.query.filter_by(uin=uin).first()
     if result:
       abort(409, message="UIN already exists")
-    answer_order = request.args.get('answerOrder', 'random')
-    if answer_order not in ['random', 'points_desc']:
+    legacy_answer_order = request.args.get('answerOrder', 'random')
+    test_answer_order = request.args.get('testAnswerOrder', legacy_answer_order)
+    prakt_answer_order = request.args.get('praktAnswerOrder', legacy_answer_order)
+    tem_answer_order = request.args.get('temAnswerOrder', legacy_answer_order)
+    answer_orders = [test_answer_order, prakt_answer_order, tem_answer_order]
+    if any(order not in ['random', 'points_desc'] for order in answer_orders):
       abort(400, message="Invalid answer order")
 
     if (org == 'fda'):
@@ -100,10 +114,16 @@ class Add(Resource):
     edited['category'] = category
     edited['org'] = org
     edited['prakt'] = editedP
+    user_answer_orders = {
+      'answer_order': prakt_answer_order,
+      'test_answer_order': test_answer_order,
+      'prakt_answer_order': prakt_answer_order,
+      'tem_answer_order': tem_answer_order
+    }
     if(org == 'favt_mos' or org == 'favt_ul'):
-      user = User(uin=uin, questions=json.dumps(edited), ticket=int(prakt), answer_order=answer_order)
+      user = User(uin=uin, questions=json.dumps(edited), ticket=int(prakt), **user_answer_orders)
     else:
-      user = User(uin=uin, questions=json.dumps(edited), answer_order=answer_order)
+      user = User(uin=uin, questions=json.dumps(edited), **user_answer_orders)
     db.session.add(user)
     db.session.commit()
     return 201
@@ -111,9 +131,18 @@ class Add(Resource):
 def init_database():
   db.create_all()
   columns = db.session.execute(text('PRAGMA table_info("user")')).fetchall()
-  if 'answer_order' not in [column[1] for column in columns]:
+  column_names = [column[1] for column in columns]
+  if 'answer_order' not in column_names:
     db.session.execute(text('ALTER TABLE "user" ADD COLUMN answer_order VARCHAR(20) NOT NULL DEFAULT \'random\''))
-    db.session.commit()
+  for column_name in ['test_answer_order', 'prakt_answer_order', 'tem_answer_order']:
+    if column_name not in column_names:
+      db.session.execute(text(
+        f'ALTER TABLE "user" ADD COLUMN {column_name} VARCHAR(20) NOT NULL DEFAULT \'random\''
+      ))
+      db.session.execute(text(
+        f'UPDATE "user" SET {column_name} = answer_order'
+      ))
+  db.session.commit()
   
 class EndOfTest(Resource):
   def put(self, uin, category):

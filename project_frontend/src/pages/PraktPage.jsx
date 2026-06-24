@@ -32,7 +32,6 @@ const orderAnswers = (answers, answerOrder) => {
 const PraktPage = () => {
   const navigate = useNavigate();
   const data = JSON.parse(sessionStorage.getItem('data'));
-  const answerOrder = sessionStorage.getItem('answerOrder') || 'random';
   const [countP, setCountP] = useState(0);
   const [countT, setCountT] = useState(0);
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -41,6 +40,12 @@ const PraktPage = () => {
   const questions = data['prakt'];
   const {number} = useParams();
   const currentQuestion = questions[number-1];
+  const answerOrderStorageKey = currentQuestion.type == 'tem'
+    ? 'temAnswerOrder'
+    : 'praktAnswerOrder';
+  const answerOrder = sessionStorage.getItem(answerOrderStorageKey)
+    || sessionStorage.getItem('answerOrder')
+    || 'random';
 
   const shuffledAnswersArray = useMemo(() => {
     return orderAnswers(currentQuestion.options, answerOrder);

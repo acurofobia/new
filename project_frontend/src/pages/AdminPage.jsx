@@ -13,7 +13,9 @@ const AdminPage = () => {
   const questions = useRef('');
   const [pQuestions, setPQuestions] = useState('');
   const [tQuestions, setTQuestions] = useState('');
-  const [answerOrder, setAnswerOrder] = useState('random');
+  const [testAnswerOrder, setTestAnswerOrder] = useState('random');
+  const [praktAnswerOrder, setPraktAnswerOrder] = useState('random');
+  const [temAnswerOrder, setTemAnswerOrder] = useState('random');
   const [responseStatus, setResponseStatus] = useState('Ответа нет');
   const [allUins, setAllUins] = useState([]);
   const svg2 = svg + '#curve';
@@ -22,7 +24,12 @@ const AdminPage = () => {
     evt.preventDefault();
     sessionStorage.setItem('praktTicket', pQuestions);
     sessionStorage.setItem('temTicket', tQuestions);
-    fetch(`api/add/${org}/${uin}/${category}/${questions.current?.value}/${pQuestions}/${tQuestions}?answerOrder=${answerOrder}`, {
+    const answerOrderParams = new URLSearchParams({
+      testAnswerOrder,
+      praktAnswerOrder,
+      temAnswerOrder
+    });
+    fetch(`api/add/${org}/${uin}/${category}/${questions.current?.value}/${pQuestions}/${tQuestions}?${answerOrderParams}`, {
       method: 'PUT'
     })
     .then((res) => {
@@ -82,11 +89,11 @@ const AdminPage = () => {
           <option value="favt_ul">ФАВТ Ульяновск</option>
         </select>
         <svg viewBox="0 0 382 17" className='svg'>
-          <use href={svg2} /> 
+          <use href={svg2} />
         </svg> 
         <input className='page-form-item' onChange={(evt) => {setUin(evt.target.value)}} type="text" placeholder='УИН' />
         <svg viewBox="0 0 382 17" className='svg'>
-          <use href={svg2} /> 
+          <use href={svg2} />
         </svg> 
         <input className='page-form-item' onChange={(evt) => {setCategory(evt.target.value)}} type="text" placeholder='Категория'/>
         <svg viewBox="0 0 382 17" className='svg'>
@@ -104,7 +111,24 @@ const AdminPage = () => {
         <svg viewBox="0 0 382 17" className='svg'>
           <use href={svg2} /> 
         </svg> 
-        <select className='page-form-item' value={answerOrder} onChange={(evt) => {setAnswerOrder(evt.target.value)}}>
+        <label className='answer-order-label' htmlFor='test-answer-order'>Порядок вариантов в тестах</label>
+        <select id='test-answer-order' className='page-form-item' value={testAnswerOrder} onChange={(evt) => {setTestAnswerOrder(evt.target.value)}}>
+          <option value="random">Перемешивать варианты ответов</option>
+          <option value="points_desc">Сначала правильный вариант</option>
+        </select>
+        <svg viewBox="0 0 382 17" className='svg'>
+          <use href={svg2} />
+        </svg>
+        <label className='answer-order-label' htmlFor='prakt-answer-order'>Порядок вариантов в практических вопросах</label>
+        <select id='prakt-answer-order' className='page-form-item' value={praktAnswerOrder} onChange={(evt) => {setPraktAnswerOrder(evt.target.value)}}>
+          <option value="random">Перемешивать варианты ответов</option>
+          <option value="points_desc">Сначала вариант с максимальным числом баллов</option>
+        </select>
+        <svg viewBox="0 0 382 17" className='svg'>
+          <use href={svg2} />
+        </svg>
+        <label className='answer-order-label' htmlFor='tem-answer-order'>Порядок вариантов в тематических вопросах</label>
+        <select id='tem-answer-order' className='page-form-item' value={temAnswerOrder} onChange={(evt) => {setTemAnswerOrder(evt.target.value)}}>
           <option value="random">Перемешивать варианты ответов</option>
           <option value="points_desc">Сначала вариант с максимальным числом баллов</option>
         </select>

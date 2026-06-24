@@ -23,3 +23,9 @@
   margin-left: 20px;
   border-bottom: 3px solid #88BFFF;
 }
+
+.answer-order-label {
+  padding: 8px 15px 2px;
+  font-size: clamp(0.9375rem, 0.8553rem + 0.4386vw, 1.25rem);
+  font-weight: 500;
+}

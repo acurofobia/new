@@ -10,10 +10,22 @@ const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
   const navigate = useNavigate();
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [checkedAnswer, setCheckedAnswer] = useState('');
-  const [shuffledAnswers] = useState(() => {
+  const [orderedAnswers] = useState(() => {
     const arr = [];
     for (const key in answers) {
       arr.push({ key, ...answers[key] });
+    }
+    const answerOrder = sessionStorage.getItem('testAnswerOrder')
+      || sessionStorage.getItem('answerOrder')
+      || 'random';
+    if (answerOrder == 'points_desc') {
+      return arr.sort((a, b) => {
+        const rightDifference = Number(b.right) - Number(a.right);
+        if (rightDifference != 0) {
+          return rightDifference;
+        }
+        return String(a.key).localeCompare(String(b.key), 'ru', { numeric: true });
+      });
     }
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -46,7 +58,7 @@ const Question = ({number, setEnd, setArrayOfCheckedAnswers}) => {
   return (
     <form className='question-page-form' onChange={() => setButtonDisabled(false)} onSubmit={onSubmit}>
       <h3 className='question-page-question'>{questions[arrayOfQuestionsKeys[number-1]].question}</h3>
-      { shuffledAnswers.map((answer) => {
+      { orderedAnswers.map((answer) => {
         const inputId = `question-${number}-answer-${answer.key}`;
         return <Answer
           setCheckedAnswer={setCheckedAnswer}
